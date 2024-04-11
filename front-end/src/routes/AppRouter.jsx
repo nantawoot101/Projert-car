@@ -4,6 +4,8 @@ import RegisterForm from '../pages/RegisterForm'
 import useAuth from '../hooks/useAuth'
 import Header from '../pages/Header'
 import HomePage from '../pages/HomePage'
+import AddCar from '../pages/AddCar'
+import CarEdit from '../pages/CarEdit'
 
 const guestRouter = createBrowserRouter([
   {
@@ -29,7 +31,10 @@ const userRouter = createBrowserRouter([
     </>,
     children : [
       { index: true, element: <HomePage /> },
-      { path: '/login', element: <HomePage to='/'/>}
+      { path: '/login', element: <HomePage to='/'/>},
+      { path: '/home', element: <HomePage />},
+      { path: '/add-car', element: <AddCar />},
+      { path: '/car-edit/:id', element: <CarEdit />},
     ]
   }
 ])

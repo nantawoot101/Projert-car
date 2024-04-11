@@ -79,7 +79,7 @@ export default function AddCar() {
       
         <label className="form-control w-full max-w-xs mx-auto mb-5 ">
           <div className="label">
-            <span className="label-text">note</span>
+            <span className="label-text">หมายเหตุ</span>
           </div>
           <input
             type="texy"

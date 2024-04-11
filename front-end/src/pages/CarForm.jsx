@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 export default function CarForm() {
   const [cars, setCars] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const carsPerPage = 10; // กำหนดจำนวนรถยนต์ต่อหน้า
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,6 +32,14 @@ export default function CarForm() {
     }
   };
 
+  // คำนวณหน้าปัจจุบันของรถยนต์
+  const indexOfLastCar = currentPage * carsPerPage;
+  const indexOfFirstCar = indexOfLastCar - carsPerPage;
+  const currentCars = cars.slice(indexOfFirstCar, indexOfLastCar);
+
+  // สร้างหน้าเมื่อมีการเปลี่ยนหน้า
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div>
       <div className="flex justify-between mt-5 ml-3">
@@ -51,7 +61,7 @@ export default function CarForm() {
             </tr>
           </thead>
           <tbody>
-            {cars.map((car, index) => (
+            {currentCars.map((car, index) => (
               <tr key={index} className="border-b border-gray-400">
                 <td className="border px-4 py-2">{car.id}</td>
                 <td className="border px-4 py-2">{car.car_registration}</td>
@@ -67,6 +77,26 @@ export default function CarForm() {
             ))}
           </tbody>
         </table>
+      </div>
+      {/* การแบ่งหน้า */}
+      <div className="flex justify-center mt-4">
+        <nav>
+          <ul className="pagination flex items-center space-x-4">
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button onClick={() => paginate(currentPage - 1)} className={`w-10 h-10 rounded-full border border-black text-black flex items-center justify-center ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}>&#9664;</button>
+            </li>
+            {Array.from({ length: Math.ceil(cars.length / carsPerPage) }, (_, i) => (
+              <li key={i} className="page-item">
+                <button onClick={() => paginate(i + 1)} className={`w-10 h-10 rounded-full border border-black text-white flex items-center justify-center ${currentPage === i + 1 ? 'bg-black text-white' : 'text-black'}`}>
+                  {i + 1}
+                </button>
+              </li>
+            ))}
+            <li className={`page-item ${currentPage === Math.ceil(cars.length / carsPerPage) ? 'disabled' : ''}`}>
+              <button onClick={() => paginate(currentPage + 1)} className={`w-10 h-10 rounded-full border border-black text-black flex items-center justify-center ${currentPage === Math.ceil(cars.length / carsPerPage) ? 'opacity-50 cursor-not-allowed' : ''}`}>&#9654;</button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   );
